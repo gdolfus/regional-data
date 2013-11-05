@@ -18,7 +18,7 @@
 # Clear workspace.
 rm(list = ls())
 
-dirname <- "~/RRR_finn/data/statfin/regional/"
+dirname.data <- "~/RRR_finn/data/statfin/regional/"
 
 # - - - - - - - - - - - - - - - - - - - - - -  
 #
@@ -26,21 +26,21 @@ dirname <- "~/RRR_finn/data/statfin/regional/"
 #
 # - - - - - - - - - - - - - - - - - - - - - - 
 years <- as.character(1985:1995)
-places <- read.table(paste(dirname, "seutukunnat.txt", 
+places <- read.table(paste(dirname.data, "seutukunnat.txt", 
 	sep = ""))
 places <- places[, 1]
-indust <- read.csv(paste(dirname, "toimialat.csv", sep = ""))
+indust <- read.csv(paste(dirname.data, "toimialat.csv", sep = ""))
 indust <- c("maa", "metsa", "kala", "elintar", "puu", 
 	"perus", "muu_teoll", "raken", "tukku", "majoitus", 
 	"kuljetus", "rahoitus", "kiinteisto", "asuntojen", 
 	"hallinto", "koulutus", "terveys", "muut_palv", 
 	"kotipal", "erittelematon")
 
-# vars <- c("Tuotos perushintaan", "Valituotekaytto ostajanhintaan", 
-	# "Arvonlisays, brutto perushintaan", "Palkansaajakorvaukset", 
-	# "Tyolliset", "Yrittajat", "Palkansaajat", "Tehdyt tyotunnit", 
-	# "Yrittajien tehdyt tyotunnit", "Palkansaajien tehdyt tyotunnit", 
-	# "Kiintean paaoman bruttomuodostus")
+vars.original <- c("Tuotos perushintaan", "Valituotekaytto ostajanhintaan", 
+ "Arvonlisays, brutto perushintaan", "Palkansaajakorvaukset", 
+ "Tyolliset", "Yrittajat", "Palkansaajat", "Tehdyt tyotunnit", 
+ "Yrittajien tehdyt tyotunnit", "Palkansaajien tehdyt tyotunnit", 
+ "Kiintean paaoman bruttomuodostus")
 vars <- c("output", "input", "value_added", "wage", 
 	"work", "entre", "empl", "hrs", "hrs_entre", "hrs_empl", 
 	"fixed_capital")
@@ -78,7 +78,7 @@ start <- "yes"
 counter <- 0
 
 for (i in files) {
-	dat <- read.csv(paste(dirname, i, sep = ""), header = F)
+	dat <- read.csv(paste(dirname.data, i, sep = ""), header = F)
 	tmp <- dat[-c(1, 2, 3, 4, 5, 6, 7, 87:96), -c(1, 
 		2, 3, 4)]
 	counter <- counter + 1
@@ -115,10 +115,13 @@ tmpall$fixed_capital <- as.numeric(as.character(tmpall$fixed_capital))
 
 
 # Housekeeping.
-write.csv(tmpall, "aaa-panel.csv")
-write.csv(indust, "aaa-indust.csv")
-write.csv(as.character(places), "aaa-places.csv")
-write.csv(years, "aaa-years.csv")
+write.csv(tmpall, paste(dirname.data,"aaa-panel.csv",sep=''))
+write.csv(indust, paste(dirname.data,"aaa-indust.csv",sep=''))
+write.csv(as.character(places),paste(dirname.data,"aaa-places.csv",sep=''))
+write.csv(years,paste(dirname.data,"aaa-years.csv",sep=''))
+write.csv(vars.original,paste(dirname.data,"aaa-vars-original.csv",sep=''))
+
+
 
 # Clean up.
 rm(list = ls())
