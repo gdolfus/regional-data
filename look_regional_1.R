@@ -176,14 +176,14 @@ rm(tmp.series,tmp.table,tmp.df)
 #
 # - - - - - - - - - - - - - - - - - - - - - - 
 
-tmp.series<-matrix(NA,nrow=length(places),ncol=length(years))
+tmp.series<-matrix(NA,nrow=length(years),ncol=length(places))
 
 
 for(i in 1:length(years)){
 	for(j in 1:length(places)){
 		tmp.i<-1+(i-1)*length(places)
 		tmp.i<-tmp.i+(j-1)
-		tmp.series[j,i]<-dat$output[tmp.i]
+		tmp.series[i,j]<-dat$output[tmp.i]
 	}
 }
 
@@ -192,8 +192,8 @@ rm(i,j,tmp.i)
 
 
 tmp.table<-tmp.series
-rownames(tmp.table)<-places
-colnames(tmp.table)<-years
+rownames(tmp.table)<-as.character(years)
+colnames(tmp.table)<-places
 
 
 tmp.textable<-xtable(tmp.table, caption='Regional Accounts -- Output by Regions', align=rep('r',ncol(tmp.table)+1), label='regacc-output-regions')
@@ -202,8 +202,8 @@ tmp.textable
 sink() # this ends the sinking
 
 rownames(tmp.table)<-NULL
-tmp.df<-data.frame(places,tmp.table)
-colnames(tmp.df)<-c('places',as.character(years))
+tmp.df<-data.frame(years,tmp.table)
+# colnames(tmp.df)<-c('places',as.character(years))
 
 # Housekeeping.
 
