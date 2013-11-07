@@ -22,8 +22,6 @@
 
 # Clear workspace.
 rm(list = ls())
-# Load the package for creating LaTeX tables.
-library(xtable)
 # Load the package for making fancy plots.
 library(ggplot2)
 # Load the package for preparing data frames for plots.
@@ -44,12 +42,31 @@ dirname.pics <- "~/RRR_finn/pics/"
 # - - - - - - - - - - - - - - - - - - - - - - 
 
 
-tmp.df<-read.csv(paste(dirname.data,'bbb-output-by-indust.csv',sep=''))
+df.indust<-read.csv(paste(dirname.data,'aaa-output-indust-all-years.csv',sep=''))
 
-# Remove total.
-tmp.df$X<-NULL
-tmp.df$all<-NULL
+# Remove superfluous stuff and total.
+df.indust$X<-NULL
+df.indust$all<-NULL
+df.indust$erittelematon<-NULL
 
+df.places<-read.csv(paste(dirname.data,'aaa-output-all-places-years.csv',sep=''))
+
+# Remove superfluous stuff.
+df.places$X<-NULL
+# Make it pretty.
+# colnames(df.places)<-c('places',as.character(years))
+
+
+# These are useful too.
+indust<-read.csv(paste(dirname.data,'aaa-indust.csv',sep=''))
+places<-read.csv(paste(dirname.data,'aaa-places.csv',sep=''))
+years<-read.csv(paste(dirname.data,'aaa-years.csv',sep=''))
+vars<-read.csv(paste(dirname.data,'aaa-vars.csv',sep=''))
+
+# Make these vectors.
+indust<-indust[,2]
+places<-places[,2]
+years<-years[,2]
 
 
 # - - - - - - - - - - - - - - - - - - - - - -  
@@ -61,6 +78,7 @@ tmp.df$all<-NULL
 
 # By industries.
 
+tmp.df<-df.indust
 
 # Prepare the data frame for using ggplot.
 tmp.df<-melt(tmp.df,id='years',variable_name='industries')
@@ -70,3 +88,20 @@ tmp.plot<-ggplot(tmp.df, aes(years,value)) + geom_line(aes(colour = industries))
 # tmp.plot+ scale_y_discrete(breaks=years,labels=as.character(years))
 
 tmp.plot
+
+rm(tmp.df)
+
+# By regions.
+
+tmp.df<-df.places[,c(-2,-3)]
+
+# Prepare the data frame for using ggplot.
+tmp.df<-melt(tmp.df,id='years',variable_name='seutukunnat')
+
+tmp.plot<-ggplot(tmp.df, aes(years,value)) + geom_line(aes(colour = seutukunnat))
+
+# tmp.plot+ scale_y_discrete(breaks=years,labels=as.character(years))
+
+tmp.plot
+
+rm(tmp.df)
