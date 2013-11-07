@@ -152,7 +152,7 @@ rm(i,j,tmp.ind,tmp.first,tmp.last)
 
 
 tmp.table<-tmp.series
-rownames(tmp.table)<-years
+# rownames(tmp.table)<-years
 colnames(tmp.table)<-indust
 # colnames(tmp.table)<-c('all','maa')
 
@@ -161,40 +161,14 @@ sink(file=paste(dirname.tab,'secondlook.tex',sep=''))
 tmp.textable
 sink() # this ends the sinking
 
-write.csv(tmp.table,paste(dirname.data,'bbb-output-by-indust.csv',sep=''))
-
-tmp.df <-data.frame(years,tmp.table[,c(-1,-21)],row.names=1:dim(tmp.table)[1])
-
-# rm(tmp.series,tmp.table,tmp.textable)
+# tmp.df<-data.frame(years,tmp.table,row.names=1:dim(tmp.table)[1])
+tmp.df<-data.frame(years,tmp.table)
 
 
-# - - - - - - - - - - - - - - - - - - - - - -  
-#
-# 		Plot some stuff.
-#
-# - - - - - - - - - - - - - - - - - - - - - - 
+write.csv(tmp.df,paste(dirname.data,'bbb-output-by-indust.csv',sep=''))
 
-# # By region.
+# Clean up.
+rm(list=ls())
 
-# tmp.color.v<-c('blue','red','green')
-# plot(years,tmp.series[,1], type="o", col='blue')
-# counter.color <- 1
-# # for(i in length(indust)){
-	# for(i in 1:2){
-		# counter.color <- counter.color+1
-		# tmp.color<-tmp.color.v[counter.color]
-		# lines(years,tmp.series[,i+1], type="o", col=tmp.color)
-		# if(counter.color>length(tmp.color.v)){counter.color<-0}
-# }
 
-# df <- data.frame(time = 1:10,
-                 # a = cumsum(rnorm(10)),
-                 # b = cumsum(rnorm(10)),
-                 # c = cumsum(rnorm(10)))
-# df <- melt(df ,  id = 'time', variable_name = 'series')
-
-# Prepare the data frame for using ggplot.
-tmp.df<-melt(tmp.df,id='years',variable_name='industries')
-
-ggplot(tmp.df, aes(years,value)) + geom_line(aes(colour = industries))
 
