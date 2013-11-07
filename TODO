@@ -1,4 +1,12 @@
 
+look
+****
+
+loop over the variables and save separate data frames
+
+plots
+*****
+
 time series:
 
 plots by regions: split them by below and above the mean
@@ -8,3 +16,9 @@ http://www.statmethods.net/advgraphs/ggplot2.html
 cross sections:
 
 industries and regions to check which ones are more important
+
+
+some time down the road
+-----------------------
+
+http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf
