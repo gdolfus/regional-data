@@ -182,7 +182,7 @@ tmp.series<-matrix(NA,nrow=length(places),ncol=length(years))
 for(i in 1:length(years)){
 	for(j in 1:length(places)){
 		tmp.i<-1+(i-1)*length(places)
-		tmp.i<-tmp.i+j
+		tmp.i<-tmp.i+(j-1)
 		tmp.series[j,i]<-dat$output[tmp.i]
 	}
 }
