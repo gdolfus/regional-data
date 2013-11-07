@@ -20,10 +20,6 @@
 rm(list = ls())
 # Load the package for creating LaTeX tables.
 library(xtable)
-# Load the package for making fancy plots.
-library(ggplot2)
-# Load the package for preparing data frames for plots.
-library(reshape)
 
 
 # Set the name of the directory where the data is.
@@ -64,7 +60,7 @@ sd(tmp)
 # - - - - - - - - - - - - - - - - - - - - - -  
 #
 # 		Create statistics by year
-#		for first industry and all places.
+#		for all industries and all places.
 #
 # - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -99,11 +95,11 @@ tmp.textable<-xtable(tmp.table, caption='Regional Accounts -- Output', align=rep
 
 # names(tmp.textable)=c("\multicolumn{2}{c}{Output}","\multicolumn{2}{c}{Employment}")
 
-sink(file=paste(dirname.tab,'firstlook.tex',sep=''))
+sink(file=paste(dirname.tab,'aaa-all-all-years',sep=''))
 tmp.textable
 sink() # this ends the sinking
 
-write.csv(tmp.table,paste(dirname.data,'bbb-output.csv',sep=''))
+write.csv(tmp.table,paste(dirname.data,'aaa-output-employment-all-all.csv',sep=''))
 
 rm(tmp.series,tmp.table,tmp.textable)
 
@@ -134,12 +130,10 @@ for(i in 1:length(indust)){
 	# (The first entry is total.)
 	tmp.first<-2+(j-1)*length(places)
 	tmp.last<-length(places)*(j)
-	print(tmp.first)
 	tmp.first<-tmp.first+tmp.ind*(i-1)
-	print(tmp.first)
-	print(tmp.ind)
 	tmp.last<-tmp.last+tmp.ind*(i-1)
-
+	
+	# Average across places.
 	tmp.series[j,i]<-mean(dat[tmp.first:tmp.last,]$output)
 	# tmp.series[j,2]<-sd(dat[tmp.first: tmp.last,]$output)
 	
@@ -152,12 +146,11 @@ rm(i,j,tmp.ind,tmp.first,tmp.last)
 
 
 tmp.table<-tmp.series
-# rownames(tmp.table)<-years
+rownames(tmp.table)<-years
 colnames(tmp.table)<-indust
-# colnames(tmp.table)<-c('all','maa')
 
 tmp.textable<-xtable(tmp.table, caption='Regional Accounts -- Output by Industries', align=rep('r',ncol(tmp.table)+1), label='regacc-output-indust')
-sink(file=paste(dirname.tab,'secondlook.tex',sep=''))
+sink(file=paste(dirname.tab,'aaa-output-indust-all-years.tex',sep=''))
 tmp.textable
 sink() # this ends the sinking
 
@@ -165,10 +158,57 @@ sink() # this ends the sinking
 tmp.df<-data.frame(years,tmp.table)
 
 
-write.csv(tmp.df,paste(dirname.data,'bbb-output-by-indust.csv',sep=''))
+# Housekeeping.
 
-# Clean up.
-rm(list=ls())
+write.csv(tmp.df,paste(dirname.data,'aaa-output-indust-all-years.csv',sep=''))
+
+
+
+rm(tmp.series,tmp.table,tmp.df)
+
+
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - -  
+#
+# 		Create statistics by region and year.
+#
+# - - - - - - - - - - - - - - - - - - - - - - 
+
+tmp.series<-matrix(NA,nrow=length(places),ncol=length(years))
+
+
+for(i in 1:length(years)){
+	for(j in 1:length(places)){
+		tmp.i<-1+(i-1)*length(places)
+		tmp.i<-tmp.i+j
+		tmp.series[j,i]<-dat$output[tmp.i]
+	}
+}
+
+
+rm(i,j,tmp.i)
+
+
+tmp.table<-tmp.series
+rownames(tmp.table)<-places
+colnames(tmp.table)<-years
+
+
+tmp.textable<-xtable(tmp.table, caption='Regional Accounts -- Output by Regions', align=rep('r',ncol(tmp.table)+1), label='regacc-output-regions')
+sink(file=paste(dirname.tab,'aaa-output-all-places-years.tex',sep=''))
+tmp.textable
+sink() # this ends the sinking
+
+rownames(tmp.table)<-NULL
+tmp.df<-data.frame(places,tmp.table)
+colnames(tmp.df)<-c('places',as.character(years))
+
+# Housekeeping.
+
+write.csv(tmp.df,paste(dirname.data,'aaa-output-all-places-years.csv',sep=''))
+
 
 
 
