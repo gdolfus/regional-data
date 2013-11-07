@@ -3,7 +3,7 @@
 # 	Start: October 2013.
 #
 
-read_regional_2.R       Read regional statistics after pulling them from the Statistics 
+read_regional_1.R       Read regional statistics after pulling them from the Statistics 
                         Finland site.
                         
 look_regional_1.R       Compute some descriptive statistics from the data.
