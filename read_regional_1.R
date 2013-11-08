@@ -137,7 +137,7 @@ write.csv(cbind(vars.original, vars), paste(dirname.data,
 tmp<-read.csv(paste(dirname.data.national,'cpi-fin-85-95-base-85.csv', sep = ""),header = F)
 
 cpi<-tmp[c(-1,-2,-3,-4,-16,-17,-18,-19,-20,-21),c(-1,-2)]
-
+cpi<-rev(cpi)
 tmp.df<-data.frame(years,cpi)
 
 
