@@ -117,15 +117,15 @@ tmp.all$fixed_capital <- as.numeric(as.character(tmp.all$fixed_capital))
 
 # Housekeeping.
 write.csv(tmp.all, paste(dirname.data, "aaa-panel.csv", 
-	sep = ""))
+	sep = ""),row.names=FALSE)
 write.csv(indust, paste(dirname.data, "aaa-indust.csv", 
-	sep = ""))
+	sep = ""),row.names=FALSE)
 write.csv(as.character(places), paste(dirname.data, 
-	"aaa-places.csv", sep = ""))
+	"aaa-places.csv", sep = ""),row.names=FALSE)
 write.csv(years, paste(dirname.data, "aaa-years.csv", 
-	sep = ""))
+	sep = ""),row.names=FALSE)
 write.csv(cbind(vars.original, vars), paste(dirname.data, 
-	"aaa-vars.csv", sep = ""))
+	"aaa-vars.csv", sep = ""),row.names=FALSE)
 
 
 # - - - - - - - - - - - - - - - - - - - - - -  
@@ -136,10 +136,11 @@ write.csv(cbind(vars.original, vars), paste(dirname.data,
 
 tmp<-read.csv(paste(dirname.data.national,'cpi-fin-85-95-base-85.csv', sep = ""),header = F)
 
-tmp<-tmp[c(-1,-2,-3,-4,-16,-17,-18,-19,-20,-21),c(-1,-2)]
+cpi<-tmp[c(-1,-2,-3,-4,-16,-17,-18,-19,-20,-21),c(-1,-2)]
 
-tmp.df<-data.frame(years,tmp)
+tmp.df<-data.frame(years,cpi)
+
 
 # Housekeeping.
 write.csv(tmp.df, paste(dirname.data.national, "aaa-cpi.csv", 
-	sep = ""))
+	sep = ""),row.names=FALSE)
