@@ -24,6 +24,7 @@ library(xtable)
 
 # Set the name of the directory where the data is.
 dirname.data <- "~/RRR_finn/data/statfin/regional/"
+dirname.data.national<-"~/RRR_finn/data/statfin/national/"
 # Set the name of the directory for saving LaTeX tables.
 dirname.tab<-"~/RRR_finn/tables/"
 
@@ -43,9 +44,9 @@ years<-read.csv(paste(dirname.data,'aaa-years.csv',sep=''))
 vars<-read.csv(paste(dirname.data,'aaa-vars.csv',sep=''))
 
 # Make these vectors.
-indust<-indust[,2]
-places<-places[,2]
-years<-years[,2]
+indust<-indust[,1]
+places<-places[,1]
+years<-years[,1]
 
 # - - - - - - - - - - - - - - - - - - - - - -  
 #
@@ -208,6 +209,30 @@ tmp.df<-data.frame(years,tmp.table)
 # Housekeeping.
 
 write.csv(tmp.df,paste(dirname.data,'aaa-output-all-places-years.csv',sep=''))
+
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - -  
+#
+# 		Deflate the data.
+#
+# - - - - - - - - - - - - - - - - - - - - - - 
+
+cpi	<-read.csv(paste(dirname.data.national,'aaa-cpi.csv',sep=''),check.names=FALSE)
+
+
+tmp.df<-read.csv(paste(dirname.data,'aaa-output-all-places-years.csv',sep=''))
+tmp<-100*tmp.df/cpi[,2]
+
+write.csv(tmp.df,paste(dirname.data,'aaa-output-all-places-years-real.csv',sep=''))
+
+
+tmp.df<-read.csv(paste(dirname.data,'aaa-output-indust-all-years.csv',sep=''))
+tmp<-100*tmp.df/cpi[,2]
+write.csv(tmp.df,paste(dirname.data,'aaa-output-indust-all-years-real.csv',sep=''))
+
+
 
 
 
