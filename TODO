@@ -4,12 +4,12 @@ look
 
 loop over the variables and save separate data frames
 
+growth rates of output
+
 plots
 *****
 
-time series:
 
-plots by regions: split them by below and above the mean
 
 http://www.statmethods.net/advgraphs/ggplot2.html
 
