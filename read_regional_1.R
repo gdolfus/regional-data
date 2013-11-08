@@ -118,11 +118,11 @@ tmp.all$fixed_capital <- as.numeric(as.character(tmp.all$fixed_capital))
 # Housekeeping.
 write.csv(tmp.all, paste(dirname.data, "aaa-panel.csv", 
 	sep = ""),row.names=FALSE)
-write.csv(indust, paste(dirname.data, "aaa-indust.csv", 
+write.csv(data.frame(indust), paste(dirname.data, "aaa-indust.csv", 
 	sep = ""),row.names=FALSE)
-write.csv(as.character(places), paste(dirname.data, 
+write.csv(data.frame(as.character(places)), paste(dirname.data, 
 	"aaa-places.csv", sep = ""),row.names=FALSE)
-write.csv(years, paste(dirname.data, "aaa-years.csv", 
+write.csv(data.frame(years), paste(dirname.data, "aaa-years.csv", 
 	sep = ""),row.names=FALSE)
 write.csv(cbind(vars.original, vars), paste(dirname.data, 
 	"aaa-vars.csv", sep = ""),row.names=FALSE)
