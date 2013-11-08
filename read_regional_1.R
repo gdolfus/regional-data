@@ -19,7 +19,7 @@
 rm(list = ls())
 
 dirname.data <- "~/RRR_finn/data/statfin/regional/"
-
+dirname.data.national <- "~/RRR_finn/data/statfin/national/"
 # - - - - - - - - - - - - - - - - - - - - - -  
 #
 # 	Name observations, variables, and files.
@@ -128,6 +128,18 @@ write.csv(cbind(vars.original, vars), paste(dirname.data,
 	"aaa-vars.csv", sep = ""))
 
 
+# - - - - - - - - - - - - - - - - - - - - - -  
+#
+# 	Read the CPI data.
+#
+# - - - - - - - - - - - - - - - - - - - - - - 
 
-# Clean up.
-rm(list = ls())
+tmp<-read.csv(paste(dirname.data.national,'cpi-fin-85-95-base-85.csv', sep = ""),header = F)
+
+tmp<-tmp[c(-1,-2,-3,-4,-16,-17,-18,-19,-20,-21),c(-1,-2)]
+
+tmp.df<-data.frame(years,tmp)
+
+# Housekeeping.
+write.csv(tmp.df, paste(dirname.data.national, "aaa-cpi.csv", 
+	sep = ""))
