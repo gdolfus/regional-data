@@ -100,7 +100,7 @@ sink(file=paste(dirname.tab,'aaa-all-all-years',sep=''))
 tmp.textable
 sink() # this ends the sinking
 
-write.csv(tmp.table,paste(dirname.data,'aaa-output-employment-all-all.csv',sep=''))
+write.csv(tmp.table,paste(dirname.data,'aaa-output-employment-all-all.csv',sep=''),row.names=FALSE)
 
 rm(tmp.series,tmp.table,tmp.textable)
 
@@ -161,7 +161,7 @@ tmp.df<-data.frame(years,tmp.table)
 
 # Housekeeping.
 
-write.csv(tmp.df,paste(dirname.data,'aaa-output-indust-all-years.csv',sep=''))
+write.csv(tmp.df,paste(dirname.data,'aaa-output-indust-all-years.csv',sep=''),row.names=FALSE)
 
 
 
@@ -208,7 +208,7 @@ tmp.df<-data.frame(years,tmp.table)
 
 # Housekeeping.
 
-write.csv(tmp.df,paste(dirname.data,'aaa-output-all-places-years.csv',sep=''))
+write.csv(tmp.df,paste(dirname.data,'aaa-output-all-places-years.csv',sep=''),row.names=FALSE)
 
 
 
@@ -219,20 +219,17 @@ write.csv(tmp.df,paste(dirname.data,'aaa-output-all-places-years.csv',sep=''))
 #
 # - - - - - - - - - - - - - - - - - - - - - - 
 
-cpi	<-read.csv(paste(dirname.data.national,'aaa-cpi.csv',sep=''),check.names=FALSE)
+cpi	<-read.csv(paste(dirname.data.national,'aaa-cpi.csv',sep=''))
 
-
+# Output by industries.
 tmp.df<-read.csv(paste(dirname.data,'aaa-output-all-places-years.csv',sep=''))
 tmp<-100*tmp.df/cpi[,2]
+write.csv(tmp.df,paste(dirname.data,'aaa-output-all-places-years-real.csv',sep=''),row.names=FALSE)
 
-write.csv(tmp.df,paste(dirname.data,'aaa-output-all-places-years-real.csv',sep=''))
-
-
+# Output by regions.
 tmp.df<-read.csv(paste(dirname.data,'aaa-output-indust-all-years.csv',sep=''))
 tmp<-100*tmp.df/cpi[,2]
-write.csv(tmp.df,paste(dirname.data,'aaa-output-indust-all-years-real.csv',sep=''))
-
-
+write.csv(tmp.df,paste(dirname.data,'aaa-output-indust-all-years-real.csv',sep=''),row.names=FALSE)
 
 
 
