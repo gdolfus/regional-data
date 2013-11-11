@@ -15,11 +15,20 @@
 # 	Tuotanto ja työllisyys seutukunnittain 1975-2008*, 20 toimialaa
 
 
+
+
+# - - - - - - - - - - - - - - - - - - - - - -  
+#
+# 		Setup.
+#
+# - - - - - - - - - - - - - - - - - - - - - - 
+
 # Clear workspace.
 rm(list = ls())
 
 dirname.data <- "~/RRR_finn/data/statfin/regional/"
 dirname.data.national <- "~/RRR_finn/data/statfin/national/"
+
 # - - - - - - - - - - - - - - - - - - - - - -  
 #
 # 	Name observations, variables, and files.
