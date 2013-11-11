@@ -6,6 +6,6 @@
 read_regional_1.R       Read regional statistics after pulling them from the Statistics 
                         Finland site.
                         
-look_regional_1.R       Compute some variables and descriptive statistics from the data.
+look_regional_1.R       Compute some variables and descriptive statistics.
 
 plot_regional_1.R       Plot some of the variables created with look_regional_1.R.
