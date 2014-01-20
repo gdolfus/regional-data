@@ -1,10 +1,14 @@
+read
+****
+
+wait for Statistics Finland before going to municipal level
 
 look
 ****
 
-loop over the variables and save separate data frames
+growth rates of output across industries
 
-growth rates of output
+loop over the variables and save separate data frames
 
 plots
 *****
@@ -16,6 +20,8 @@ http://www.statmethods.net/advgraphs/ggplot2.html
 cross sections:
 
 industries and regions to check which ones are more important
+
+
 
 
 some time down the road
