@@ -47,6 +47,7 @@ vars<-read.csv(paste(dirname.data,'aaa-vars.csv',sep=''))
 indust<-indust[,1]
 places<-places[,1]
 years<-years[,1]
+#years<-1985:1992 # Reduce it to the range that I look at for the bank data.
 
 # - - - - - - - - - - - - - - - - - - - - - -  
 #
@@ -65,6 +66,8 @@ sd(tmp)
 #
 # - - - - - - - - - - - - - - - - - - - - - - 
 
+# Note the data format industry-place-year.
+# The first 21 entries are for all industries in year 1985.
 
 tmp.series<-matrix(NA,nrow=length(years),ncol=4)
 
@@ -82,7 +85,9 @@ for(i in 1:length(years)){
 	# Total Employment
 	tmp.series[i,3]<-mean(dat[start:end,]$empl_tot)
 	tmp.series[i,4]<-sd(dat[start:end,]$empl_tot)
-	
+	# Check that I'm doing it right.
+	#print(dat[start,]$X)
+	#print(dat[end,]$X)
 }
 	
 rm(i,start,end)
@@ -96,7 +101,7 @@ tmp.textable<-xtable(tmp.table, caption='Regional Accounts -- Output', align=rep
 
 # names(tmp.textable)=c("\multicolumn{2}{c}{Output}","\multicolumn{2}{c}{Employment}")
 
-sink(file=paste(dirname.tab,'aaa-all-all-years',sep=''))
+sink(file=paste(dirname.tab,'aaa-all-all-years.tex',sep=''))
 tmp.textable
 sink() # this ends the sinking
 
@@ -234,3 +239,109 @@ write.csv(tmp.df,paste(dirname.data,'aaa-output-indust-all-years-real.csv',sep='
 
 
 
+
+
+# - - - - - - - - - - - - - - - - - - - - - -  
+#
+# 	Compute growth rates for total output
+# 	but for every location separately.
+#
+# - - - - - - - - - - - - - - - - - - - - - - 
+
+
+# Note the data format industry-place-year.
+# The first 21 entries are for all industries in year 1985.
+
+
+tmp.series <- matrix(NA, nrow = (length(years) * length(places)), 
+	ncol = 4)
+
+for (i in 1:length(years)) {
+
+	# First and last place.
+	# (The first entry is total.)
+
+	start <- 2 + (i - 1) * length(places)
+	end <- length(places) * (i)
+
+
+	# Output
+	tmp.series[start:end, 1] <- dat[start:end, ]$output
+	tmp.output.new <- dat[start:end, ]$output
+	if (i > 1) {
+
+		tmp.series[start:end, 2] <- 100 * (tmp.output.new - tmp.output.old)/tmp.output.old
+
+	}
+
+	tmp.output.old <- dat[start:end, ]$output
+
+
+	# Total Employment
+	
+	tmp.series[start:end, 3] <- dat[start:end, ]$empl_tot
+	tmp.empl_tot.new <- dat[start:end, ]$empl_tot
+	if (i > 1) {
+
+		tmp.series[start:end, 4] <- 100 * (tmp.empl_tot.new - tmp.empl_tot.old)/tmp.empl_tot.old
+
+	}
+
+	tmp.empl_tot.old <- dat[start:end, ]$empl_tot
+
+
+	#print(dat[start,]$X)	
+	#print(dat[end,]$X)
+
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - -  
+#
+# 		Create statistics on growth rates 
+#		by year for all industries and all places.
+#
+# - - - - - - - - - - - - - - - - - - - - - - 
+
+tmp.stats <- matrix(NA, nrow = length(years), ncol = 8)
+
+for (i in 1:length(years)) {
+
+	# First and last place.
+	# (The first entry is total.)
+
+	start <- 2 + (i - 1) * length(places)
+	end <- length(places) * (i)
+
+	# Output
+	tmp.stats[i, 1] <- mean(tmp.series[start:end, 2])
+	tmp.stats[i, 2] <- min(tmp.series[start:end, 2])
+	tmp.stats[i, 3] <- max(tmp.series[start:end, 2])
+	tmp.stats[i, 4] <- sd(tmp.series[start:end, 2])
+
+	# Total Employment
+	tmp.stats[i, 5] <- mean(tmp.series[start:end, 4])
+	tmp.stats[i, 6] <- min(tmp.series[start:end, 4])
+	tmp.stats[i, 7] <- max(tmp.series[start:end, 4])
+	tmp.stats[i, 8] <- sd(tmp.series[start:end, 4])
+	# Check that I'm doing it right.
+	#print(dat[start,]$X)
+#print(dat[end,]$X)
+}
+
+rm(i, start, end)
+
+
+tmp.table <- tmp.stats
+tmp.table <- format(tmp.table, scientific = F, digit = 2)
+rownames(tmp.table) <- c("", years[2:length(years)])
+tmp.table[1, ] <- c("mean", "min", "max", "sd", "min", "max", "mean", 
+	"sd")
+
+tmp.textable <- xtable(tmp.table, caption = "Regional Accounts -- Growth", 
+	align = rep("r", ncol(tmp.table) + 1), label = "regacc-growth")
+names(tmp.textable) = c("\\multicolumn{4}{c}{Output}", "\\multicolumn{4}{c}{Employment}")
+
+sink(file = paste(dirname.tab, "aaa-all-all-years-growth.tex", sep = ""))
+print(tmp.textable)
+sink() # this ends the sinking
