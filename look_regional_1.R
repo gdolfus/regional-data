@@ -91,9 +91,13 @@ tmp.table<-tmp.series
 rownames(tmp.table)<-as.character(years)
 colnames(tmp.table)<-places
 
-tmp.filename=paste(dirname.tab,'seutu-output-all-places-years.tex',sep='')
 
-tmp.textable<-xtable(tmp.table, caption='Regional Accounts -- Output by Regions', align=rep('r',ncol(tmp.table)+1), label= tmp.filename)
+
+tmp.label = "seutu-output-all-places-years"
+tmp.filename = paste(dirname.tab, tmp.label,".tex", sep = "")
+
+
+tmp.textable<-xtable(tmp.table, caption='Regional Accounts -- Output by Regions', align=rep('r',ncol(tmp.table)+1), label= tmp.label)
 sink(file=tmp.filename)
 tmp.textable
 sink() # this ends the sinking
@@ -153,7 +157,7 @@ tmp.table[1, ] <- c("mean", "min", "max", "sd", "mean", "min", "max",
 # Only look at the years that I have data for the banks for.
 tmp.table<-tmp.table[rownames(tmp.table)%in%c("",sav.years),]
 
-tmp.comment.text <- "\\multicolumn{8}{r}{{\\footnotesize{\\it Source:} Statistics Finland, Regional Accounts, Seutukunnat, 20 Industries.}}"
+tmp.comment.text <- "\\multicolumn{8}{l}{{\\footnotesize{\\it Source:} Statistics Finland, Regional Accounts, Seutukunnat, 20 Industries.}}"
 tmp.comment <- list()
 	tmp.comment$pos <- list()
 	tmp.comment$pos[[1]] <- c(nrow(tmp.table))
@@ -253,7 +257,7 @@ tmp.table[1, ] <- c("mean", "min", "max", "sd", "mean", "min", "max",
 tmp.table<-tmp.table[rownames(tmp.table)%in%c("",sav.years),]
 
 
-	tmp.comment.text <- "\\multicolumn{8}{r}{{\\footnotesize{\\it Source:} Statistics Finland, Regional Accounts, Seutukunnat, 20 Industries.}}"
+	tmp.comment.text <- "\\multicolumn{8}{l}{{\\footnotesize{\\it Source:} Statistics Finland, Regional Accounts, Seutukunnat, 20 Industries.}}"
 
 tmp.comment <- list()
 	tmp.comment$pos <- list()
