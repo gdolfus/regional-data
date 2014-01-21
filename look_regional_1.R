@@ -50,7 +50,7 @@ vars<-read.csv(paste(dirname.data,'seutu-vars.csv',sep=''))
 indust<-indust[,1]
 places<-places[,1]
 years<-years[,1]
-sav.years<-1985:1992 # Reduce it to the range that I look at for the bank data.
+sav.years<-1985:1993#2 # Reduce it to the range that I look at for the bank data.
 
 
 cpi	<-read.csv(paste(dirname.data.national,'seutu-cpi.csv',sep=''))
@@ -91,9 +91,10 @@ tmp.table<-tmp.series
 rownames(tmp.table)<-as.character(years)
 colnames(tmp.table)<-places
 
+tmp.filename=paste(dirname.tab,'seutu-output-all-places-years.tex',sep='')
 
-tmp.textable<-xtable(tmp.table, caption='Regional Accounts -- Output by Regions', align=rep('r',ncol(tmp.table)+1), label='regacc-output-regions')
-sink(file=paste(dirname.tab,'seutu-output-all-places-years.tex',sep=''))
+tmp.textable<-xtable(tmp.table, caption='Regional Accounts -- Output by Regions', align=rep('r',ncol(tmp.table)+1), label= tmp.filename)
+sink(file=tmp.filename)
 tmp.textable
 sink() # this ends the sinking
 
@@ -144,23 +145,31 @@ for (i in 1:(length(years)-1)) {
 
 
 tmp.table <- rbind(rep(NA,dim(tmp.stats)[2]),tmp.stats[-dim(tmp.stats)[1],])
-tmp.table <- format(tmp.table, scientific = F, digit = 2)
+tmp.table <- format(tmp.table, scientific = F, digit = 1)
 rownames(tmp.table) <- c("", years[2:length(years)])
 tmp.table[1, ] <- c("mean", "min", "max", "sd", "mean", "min", "max", 
 	"sd")	
+
+# Only look at the years that I have data for the banks for.
+tmp.table<-tmp.table[rownames(tmp.table)%in%c("",sav.years),]
 
 tmp.comment.text <- "\\multicolumn{8}{r}{{\\footnotesize{\\it Source:} Statistics Finland, Regional Accounts, Seutukunnat, 20 Industries.}}"
 tmp.comment <- list()
 	tmp.comment$pos <- list()
 	tmp.comment$pos[[1]] <- c(nrow(tmp.table))
 	tmp.comment$command <- c(paste("\\hline \n", tmp.comment.text, "  \n", sep = ""))
+	
 
-tmp.textable <- xtable(tmp.table, caption = "Regional Accounts -- Growth -- Variation across Regions", 
-	align = rep("r", ncol(tmp.table) + 1), label = "regacc-growth")
+tmp.label = "seutu-all-all-years-growth-places"
+	tmp.filename = paste(dirname.tab, tmp.label,".tex", sep = "")
+
+
+tmp.textable <- xtable(tmp.table, caption = "Regional Accounts -- Growth -- Variation across Regions", 	align = rep("r", ncol(tmp.table) + 1), label = tmp.label) 
 names(tmp.textable) = c("\\multicolumn{4}{c}{Output}", "\\multicolumn{4}{c}{Employment}")
 
-sink(file = paste(dirname.tab, "seutu-all-all-years-growth-places.tex", sep = ""))
-print.xtable(tmp.textable, include.rownames = FALSE, caption.placement = getOption("xtable.caption.placement", "top"), 		add.to.row = tmp.comment, hline.after = c(-1, 0),sanitize.colnames.function=function(x){x})
+
+sink(file = tmp.filename)
+print.xtable(tmp.textable, include.rownames = TRUE, caption.placement = getOption("xtable.caption.placement", "top"), 		add.to.row = tmp.comment, hline.after = c(-1, 0),sanitize.colnames.function=function(x){x})
 sink() # this ends the sinking
 
 rm(i, j , list=ls(pattern="tmp"))
@@ -240,6 +249,10 @@ rownames(tmp.table) <- c("", years[2:length(years)])
 tmp.table[1, ] <- c("mean", "min", "max", "sd", "mean", "min", "max", 
 	"sd")
 	
+# Only look at the years that I have data for the banks for.
+tmp.table<-tmp.table[rownames(tmp.table)%in%c("",sav.years),]
+
+
 	tmp.comment.text <- "\\multicolumn{8}{r}{{\\footnotesize{\\it Source:} Statistics Finland, Regional Accounts, Seutukunnat, 20 Industries.}}"
 
 tmp.comment <- list()
@@ -248,12 +261,17 @@ tmp.comment <- list()
 	tmp.comment$command <- c(paste("\\hline \n", tmp.comment.text, "  \n", sep = ""))
 
 
+
+tmp.label = "seutu-all-all-years-growth-indust"
+	tmp.filename = paste(dirname.tab, tmp.label,".tex", sep = "")
+
+
 tmp.textable <- xtable(tmp.table, caption = "Regional Accounts -- Growth -- Variation across Industries", 
-	align = rep("r", ncol(tmp.table) + 1), label = "regacc-growth-indust")
+	align = rep("r", ncol(tmp.table) + 1), label = tmp.label)
 names(tmp.textable) = c("\\multicolumn{4}{c}{Output}", "\\multicolumn{4}{c}{Employment}")
 
-sink(file = paste(dirname.tab, "seutu-all-all-years-growth-indust.tex", sep = ""))
-print.xtable(tmp.textable, include.rownames = FALSE, caption.placement = getOption("xtable.caption.placement", "top"), 		add.to.row = tmp.comment, hline.after = c(-1, 0),sanitize.colnames.function=function(x){x})
+sink(file = tmp.filename)
+print.xtable(tmp.textable, include.rownames = TRUE, caption.placement = getOption("xtable.caption.placement", "top"), 		add.to.row = tmp.comment, hline.after = c(-1, 0),sanitize.colnames.function=function(x){x})
 sink() # this ends the sinking
 
 
